@@ -10,10 +10,10 @@ int main(int argc, char const *argv[])
 
 void cshell_loop()
 {
-    // Ponteiro para o início da string digitada pelo usuário
+    // pointer to the beginning of the string typed by the user
     char *line;
-    // Ponteiro para um array de strings (cada posição é uma palavra do comando)
-    // Ex: "ls -la /home" → args[0]="ls", args[1]="-la", args[2]="/home"
+    // pointer to an array of strings (each position is a word of the command)
+    // ex: "ls -la /home" → args[0]="ls", args[1]="-la", args[2]="/home"
     char **args;
     int status;
 
@@ -34,8 +34,8 @@ char *cshell_read_line(void)
 {
     int bufsize = CSHELL_RL_BUFSIZE;
     int position = 0;
-    char *buffer = malloc(sizeof(char) * bufsize);
-    int c;
+    char *buffer = malloc(sizeof(char) * bufsize); // allocates initial 1024 bytes
+    int c;                                         // int instead of char because getchar can return EOF (-1)
 
     if (!buffer)
     {
@@ -45,11 +45,11 @@ char *cshell_read_line(void)
 
     while (1)
     {
-        c = getchar();
+        c = getchar(); // reads next char from keyboard
 
         if (c == EOF || c == '\n')
         {
-            buffer[position] = '\0';
+            buffer[position] = '\0'; // null-terminates the string
             return buffer;
         }
         else
@@ -61,7 +61,7 @@ char *cshell_read_line(void)
         if (position >= bufsize)
         {
             bufsize += CSHELL_RL_BUFSIZE;
-            buffer = realloc(buffer, bufsize);
+            buffer = realloc(buffer, bufsize); // reallocates preserving content
             if (!buffer)
             {
                 fprintf(stderr, "cshell: error allocating memory\n");
